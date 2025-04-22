@@ -1,75 +1,132 @@
-# 🎨 Pertemuan 2: Menggambar di Layar
+# 🔄 Pertemuan 3: Event dan Input Pemain
 
-## 📍 1. Dasar Koordinat di Pygame
+## 🌀 1. Apa Itu Event Loop?
 
-Sebelum menggambar, kita harus paham sistem koordinat di Pygame.
+Saat kamu main game, pasti kamu menekan tombol, klik mouse, atau keluar dari game, kan?
 
-📌 Sistem koordinat:
+📌 Semua itu disebut event (kejadian).
+Pygame punya sistem yang memeriksa event itu setiap saat.
 
-- `(0, 0)` berada di pojok kiri atas layar.
-- Nilai `x` bertambah ke kanan.
-- Nilai `y` bertambah ke bawah.
+🧠 Bayangkan seperti penjaga gerbang yang terus bertanya:
+"Ada yang klik? Ada yang tekan tombol? Mau keluar dari game?"
 
-🔍 Contoh:
+📋 Contoh Event di Pygame:
 
-- `(100, 50)` artinya 100 ke kanan, 50 ke bawah.
-- `(200, 300)` artinya 200 ke kanan, 300 ke bawah.
-
-💡 Bayangkan posisi `(400, 200)` di layar. Di mana posisinya? 🤔
+- Menekan tombol di keyboard
+- Menggerakkan mouse
+- Menutup jendela game
 
 ---
 
-## 🟢 2. Menggambar Bentuk Sederhana
-
-Sekarang kita akan menggambar **persegi**, **lingkaran**, dan **garis**.
-
-### 🧱 Kode Program
+## 🧪 2. Contoh Event Loop di Pygame
 
 ```python
-    # Menggambar bentuk
-    pygame.draw.rect(layar, MERAH, (50, 50, 100, 100))      # Persegi merah
-    pygame.draw.circle(layar, HIJAU, (250, 200), 50)        # Lingkaran hijau
-    pygame.draw.line(layar, BIRU, (100, 300), (400, 300), 5) # Garis biru
+for event in pygame.event.get():
+    if event.type == pygame.QUIT:
+        jalan = False
 ```
 
----
-
-## 🧠 Penjelasan Kode
-
-| Baris Kode                                                 | Penjelasan                                                                 |
-| ---------------------------------------------------------- | -------------------------------------------------------------------------- |
-| `pygame.draw.rect(layar, MERAH, (50, 50, 100, 100))`       | Menggambar persegi merah di koordinat (50, 50) ukuran 100x100.             |
-| `pygame.draw.circle(layar, HIJAU, (250, 200), 50)`         | Menggambar lingkaran hijau di titik (250, 200) dengan radius 50.           |
-| `pygame.draw.line(layar, BIRU, (100, 300), (400, 300), 5)` | Menggambar garis biru dari (100, 300) ke (400, 300) dengan ketebalan 5 px. |
+💡 Artinya:
+Kalau ada event keluar (klik X), maka game berhenti.
 
 ---
 
-## 🔤 3. Menampilkan Teks di Layar
+## ⌨️ 3. Menangkap Keyboard dan Mouse
 
-Tambahkan teks seperti "Halo, Pygame!" ke layar.
+Sekarang kita lihat cara menangkap input dari pemain.
 
 ```python
-# Font teks
-font = pygame.font.Font(None, 50)
-teks = font.render("Halo, Pygame!", True, MERAH)
+import pygame
+pygame.init()
 
-# Menampilkan teks di posisi (120, 20)
-layar.blit(teks, (120, 20))
+# Buat jendela
+layar = pygame.display.set_mode((500, 400))
+pygame.display.set_caption("Coba Keyboard & Mouse")
+
+jalan = True
+while jalan:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            jalan = False
+
+        # Jika tombol ditekan
+        if event.type == pygame.KEYDOWN:
+            print("Tombol ditekan:", event.key)
+
+        # Jika mouse diklik
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            print("Mouse diklik di:", event.pos)
+
+pygame.quit()
 ```
 
-## 🧠 Penjelasan:
-
-| Baris Kode                                         | Penjelasan                            |
-| -------------------------------------------------- | ------------------------------------- |
-| `pygame.font.Font(None, 50)`                       | Membuat font ukuran 50 px.            |
-| `teks = font.render("Halo, Pygame!", True, MERAH)` | Membuat teks berwarna merah.          |
-| `layar.blit(teks, (120, 20))`                      | Menampilkan teks di posisi (120, 50). |
+🧪 Coba Jalankan!
+Lihat di terminal/console. Setiap tekan tombol atau klik mouse, akan keluar tulisan!
 
 ---
 
-## 🧪 Tantangan (PR)
+## 🕹️ 4. Menggerakkan Objek dengan Tombol Panah
 
-1. 🔺 Gambar segitiga menggunakan 3 garis.
-2. 📝 Tampilkan teks "Aku Bisa!" di posisi (200, 150).
-3. 🔠 Coba ubah ukuran font menjadi lebih besar atau lebih kecil.
-4. 🎨 Gunakan warna favoritmu untuk mempercantik tampilan!
+Sekarang kita buat kotak yang bisa digerakkan dengan arrow keys (↑ ↓ ← →)
+
+🔧 Kode Program:
+
+```python
+import pygame
+pygame.init()
+
+layar = pygame.display.set_mode((500, 400))
+pygame.display.set_caption("Gerakkan Kotak!")
+
+# Warna dan posisi
+PUTIH = (255, 255, 255)
+MERAH = (255, 0, 0)
+x = 200
+y = 150
+lebar = 50
+tinggi = 50
+kecepatan = 5
+
+jalan = True
+while jalan:
+    pygame.time.delay(30)
+
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            jalan = False
+
+    # Cek tombol yang ditekan
+    tombol = pygame.key.get_pressed()
+    if tombol[pygame.K_LEFT]:
+        x -= kecepatan
+    if tombol[pygame.K_RIGHT]:
+        x += kecepatan
+    if tombol[pygame.K_UP]:
+        y -= kecepatan
+    if tombol[pygame.K_DOWN]:
+        y += kecepatan
+
+    # Gambar ulang
+    layar.fill(PUTIH)
+    pygame.draw.rect(layar, MERAH, (x, y, lebar, tinggi))
+    pygame.display.update()
+
+pygame.quit()
+```
+
+🎯 Penjelasan:
+
+- `pygame.key.get_pressed()` → Mengecek tombol apa yang ditekan
+- `K_LEFT, K_RIGHT, dst` → Tombol panah
+- `x, y` → Posisi kotak
+- `x += kecepatan` → Gerak ke kanan
+
+🎉 Jalankan dan coba tekan panah! Kotak akan bergerak 🚀
+
+---
+
+## 📝 Tantangan (PR):
+
+1. Ubah kecepatan kotak menjadi 10
+2. Ubah bentuknya jadi lingkaran
+3. Tambahkan batas agar kotak tidak keluar layar
