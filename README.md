@@ -1,100 +1,75 @@
-## Selamat datang di pertemuan 1!
+# 🎨 Pertemuan 2: Menggambar di Layar
 
-Halo! 👋  
-Pada pertemuan ini, kita akan belajar cara membuat **jendela game pertama** menggunakan **Python dan Pygame**.
+## 📍 1. Dasar Koordinat di Pygame
 
-## 🔧 Langkah-langkah
+Sebelum menggambar, kita harus paham sistem koordinat di Pygame.
 
-Ikuti langkah-langkah di bawah ini untuk membuat jendela game sederhana:
+📌 Sistem koordinat:
 
-## 💻 Kode Program
+- `(0, 0)` berada di pojok kiri atas layar.
+- Nilai `x` bertambah ke kanan.
+- Nilai `y` bertambah ke bawah.
+
+🔍 Contoh:
+
+- `(100, 50)` artinya 100 ke kanan, 50 ke bawah.
+- `(200, 300)` artinya 200 ke kanan, 300 ke bawah.
+
+💡 Bayangkan posisi `(400, 200)` di layar. Di mana posisinya? 🤔
+
+---
+
+## 🟢 2. Menggambar Bentuk Sederhana
+
+Sekarang kita akan menggambar **persegi**, **lingkaran**, dan **garis**.
+
+### 🧱 Kode Program
 
 ```python
-import pygame
-
-# Inisialisasi Pygame
-pygame.init()
-
-# Buat jendela game
-lebar = 500
-tinggi = 400
-layar = pygame.display.set_mode((lebar, tinggi))
-pygame.display.set_caption("Game Pertama!")
-
-# Warna latar belakang
-warna_latar = (0, 0, 255)  # Biru
-
-# Loop utama game
-jalan = True
-while jalan:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            jalan = False  # Keluar dari game
-
-    layar.fill(warna_latar)  # Mengisi layar dengan warna biru
-    pygame.display.update()  # Perbarui tampilan layar
-
-pygame.quit()  # Keluar dari Pygame
+    # Menggambar bentuk
+    pygame.draw.rect(layar, MERAH, (50, 50, 100, 100))      # Persegi merah
+    pygame.draw.circle(layar, HIJAU, (250, 200), 50)        # Lingkaran hijau
+    pygame.draw.line(layar, BIRU, (100, 300), (400, 300), 5) # Garis biru
 ```
+
+---
 
 ## 🧠 Penjelasan Kode
 
-| Baris Kode                     | Penjelasan                                                    |
-| ------------------------------ | ------------------------------------------------------------- |
-| `import pygame`                | Menggunakan pustaka Pygame.                                   |
-| `pygame.init()`                | Menyalakan fitur-fitur Pygame.                                |
-| `pygame.display.set_mode()`    | Membuat jendela game dengan ukuran tertentu.                  |
-| `pygame.display.set_caption()` | Memberi judul pada jendela game.                              |
-| `while jalan:`                 | Program akan terus berjalan sampai kita keluar.               |
-| `pygame.event.get()`           | Mengecek input dari pengguna (misalnya menutup jendela game). |
-| `layar.fill(warna_latar)`      | Mengisi jendela dengan warna latar belakang.                  |
-| `pygame.display.update()`      | Memperbarui isi layar agar perubahan bisa terlihat.           |
-
-## 🎉 Coba Jalankan!
-
-Jika kode dijalankan dengan benar, kamu akan melihat:
-
-🟦 Sebuah jendela berwarna biru
-📛 Dengan judul: "Game Pertama!"
+| Baris Kode                                                 | Penjelasan                                                                 |
+| ---------------------------------------------------------- | -------------------------------------------------------------------------- |
+| `pygame.draw.rect(layar, MERAH, (50, 50, 100, 100))`       | Menggambar persegi merah di koordinat (50, 50) ukuran 100x100.             |
+| `pygame.draw.circle(layar, HIJAU, (250, 200), 50)`         | Menggambar lingkaran hijau di titik (250, 200) dengan radius 50.           |
+| `pygame.draw.line(layar, BIRU, (100, 300), (400, 300), 5)` | Menggambar garis biru dari (100, 300) ke (400, 300) dengan ketebalan 5 px. |
 
 ---
 
-## 📝 Tantangan (PR)
+## 🔤 3. Menampilkan Teks di Layar
 
-Berikut ini adalah beberapa hal yang perlu kamu ubah di dalam kode:
+Tambahkan teks seperti "Halo, Pygame!" ke layar.
 
-1. **Ubah warna latar belakang**  
-   Ganti warna latar belakang jendela game menjadi **merah** atau **hijau**.
+```python
+# Font teks
+font = pygame.font.Font(None, 50)
+teks = font.render("Halo, Pygame!", True, MERAH)
 
-2. **Ganti ukuran jendela**  
-   Ubah ukuran jendela game menjadi **600 x 500 piksel**.
+# Menampilkan teks di posisi (120, 20)
+layar.blit(teks, (120, 20))
+```
 
-3. **Ubah judul jendela**  
-   Ganti judul jendela game menjadi:  
-   `Game Keren Aku!`
+## 🧠 Penjelasan:
 
----
-
-## 💡 Tips
-
-- Warna bisa diubah dengan mengganti nilai RGB di fungsi
-
-  ```python
-  screen.fill((R, G, B))
-  ```
-
-- Ukuran jendela diatur saat memanggil
-
-  ```python
-  pygame.display.set_mode((width, height))
-  ```
-
-- Judul jendela bisa diatur dengan
-
-  ```python
-  pygame.display.set_caption("Judul")
-  ```
+| Baris Kode                                         | Penjelasan                            |
+| -------------------------------------------------- | ------------------------------------- |
+| `pygame.font.Font(None, 50)`                       | Membuat font ukuran 50 px.            |
+| `teks = font.render("Halo, Pygame!", True, MERAH)` | Membuat teks berwarna merah.          |
+| `layar.blit(teks, (120, 20))`                      | Menampilkan teks di posisi (120, 50). |
 
 ---
 
-Semangat ngoding dan bersenang-senanglah membuat game kamu makin keren! 😎🔥
+## 🧪 Tantangan (PR)
+
+1. 🔺 Gambar segitiga menggunakan 3 garis.
+2. 📝 Tampilkan teks "Aku Bisa!" di posisi (200, 150).
+3. 🔠 Coba ubah ukuran font menjadi lebih besar atau lebih kecil.
+4. 🎨 Gunakan warna favoritmu untuk mempercantik tampilan!
