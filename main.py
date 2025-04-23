@@ -1,44 +1,62 @@
 import pygame
 pygame.init()
 
-# Buat layar
 layar = pygame.display.set_mode((500, 400))
-pygame.display.set_caption("Animasi Otomatis")
+pygame.display.set_caption("Karakter Utama")
 
-# Warna dan posisi
+# Warna
 PUTIH = (255, 255, 255)
-MERAH = (255, 0, 0)
-x = 30
-y = 200
-radius = 30
-kecepatan = 3
 
-# Atur FPS
-clock = pygame.time.Clock()
+# ==================================================
+# Kode disini untuk memuat gambar sprite
+# Muat gambar sprite
+karakter = pygame.image.load("assets/sprites/ninja.png")
+karakter = pygame.transform.scale(karakter, (50, 50))  # Ubah ukuran
+
+# ==================================================
+
+# Posisi awal karakter
+x = 100
+y = 150
+kecepatan = 5
 
 jalan = True
 while jalan:
-    clock.tick(60)  # Set ke 60 FPS
+    pygame.time.delay(30)
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             jalan = False
 
-    # ========================================================
-    # Kode Disini Untuk Menggerakan Objek
-    # Update posisi
-    
-    if x + radius > 500:
-        kecepatan = -kecepatan
-    elif x - radius < 0:
-        kecepatan = -kecepatan
-    x += kecepatan
+    # ==================================================
+    # Kode disini untuk mengatur batas gerakan karakter
+    if x < 0:
+        x = 0
+    if x > 500 - 50:
+        x = 500 - 50
+    if y < 0:
+        y = 0
+    if y > 400 - 50:
+        y = 400 - 50
+    # ==================================================
 
-    # ========================================================
+    tombol = pygame.key.get_pressed()
+    if tombol[pygame.K_LEFT]:
+        x -= kecepatan
+    if tombol[pygame.K_RIGHT]:
+        x += kecepatan
+    if tombol[pygame.K_UP]:
+        y -= kecepatan
+    if tombol[pygame.K_DOWN]:
+        y += kecepatan
 
-    # Gambar ulang
     layar.fill(PUTIH)
-    pygame.draw.circle(layar, MERAH, (x, y), radius)
+    # ==================================================
+    # Kode disini untuk menampilkan gambar sprite
+
+    layar.blit(karakter, (x, y))  # Tampilkan gambar
+
+    # ==================================================
     pygame.display.update()
 
 pygame.quit()
