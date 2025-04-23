@@ -1,132 +1,103 @@
-# 🔄 Pertemuan 3: Event dan Input Pemain
+# 🕹️ Pertemuan 4: Animasi Dasar
 
-## 🌀 1. Apa Itu Event Loop?
+## 🔁 1. Apa Itu Game Loop?
 
-Saat kamu main game, pasti kamu menekan tombol, klik mouse, atau keluar dari game, kan?
+Game tidak jalan hanya satu kali. Game terus berputar seperti roda.
+🌀 Game Loop artinya:
 
-📌 Semua itu disebut event (kejadian).
-Pygame punya sistem yang memeriksa event itu setiap saat.
+- Mengecek input pemain
+- Mengupdate posisi objek
+- Menggambar ulang ke layar
 
-🧠 Bayangkan seperti penjaga gerbang yang terus bertanya:
-"Ada yang klik? Ada yang tekan tombol? Mau keluar dari game?"
-
-📋 Contoh Event di Pygame:
-
-- Menekan tombol di keyboard
-- Menggerakkan mouse
-- Menutup jendela game
+💡 Semua itu terjadi berulang-ulang sangat cepat!
 
 ---
 
-## 🧪 2. Contoh Event Loop di Pygame
+## ⏱️ 2. Apa Itu FPS?
 
-```python
-for event in pygame.event.get():
-    if event.type == pygame.QUIT:
-        jalan = False
-```
+FPS = Frames Per Second
+Artinya: Berapa kali layar diperbarui setiap detik.
+🎯 Contoh:
 
-💡 Artinya:
-Kalau ada event keluar (klik X), maka game berhenti.
+- 30 FPS = 30 kali per detik
+- 60 FPS = 60 kali per detik (lebih halus)
+
+💬 Semakin tinggi FPS, semakin halus gerakannya.
+🔧 Di Pygame, kita atur FPS pakai `pygame.time.Clock()`
 
 ---
 
-## ⌨️ 3. Menangkap Keyboard dan Mouse
+## 🚀 3. Menggerakkan Objek Secara Otomatis
 
-Sekarang kita lihat cara menangkap input dari pemain.
+Sekarang kita buat lingkaran merah yang bergerak otomatis dari kiri ke kanan!
+🔧 Kode:
 
 ```python
 import pygame
 pygame.init()
 
-# Buat jendela
+# Buat layar
 layar = pygame.display.set_mode((500, 400))
-pygame.display.set_caption("Coba Keyboard & Mouse")
-
-jalan = True
-while jalan:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            jalan = False
-
-        # Jika tombol ditekan
-        if event.type == pygame.KEYDOWN:
-            print("Tombol ditekan:", event.key)
-
-        # Jika mouse diklik
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            print("Mouse diklik di:", event.pos)
-
-pygame.quit()
-```
-
-🧪 Coba Jalankan!
-Lihat di terminal/console. Setiap tekan tombol atau klik mouse, akan keluar tulisan!
-
----
-
-## 🕹️ 4. Menggerakkan Objek dengan Tombol Panah
-
-Sekarang kita buat kotak yang bisa digerakkan dengan arrow keys (↑ ↓ ← →)
-
-🔧 Kode Program:
-
-```python
-import pygame
-pygame.init()
-
-layar = pygame.display.set_mode((500, 400))
-pygame.display.set_caption("Gerakkan Kotak!")
+pygame.display.set_caption("Animasi Otomatis")
 
 # Warna dan posisi
 PUTIH = (255, 255, 255)
 MERAH = (255, 0, 0)
-x = 200
-y = 150
-lebar = 50
-tinggi = 50
-kecepatan = 5
+x = 30
+y = 200
+radius = 30
+kecepatan = 3
+
+# Atur FPS
+clock = pygame.time.Clock()
 
 jalan = True
 while jalan:
-    pygame.time.delay(30)
+    clock.tick(60)  # Set ke 60 FPS
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             jalan = False
 
-    # Cek tombol yang ditekan
-    tombol = pygame.key.get_pressed()
-    if tombol[pygame.K_LEFT]:
-        x -= kecepatan
-    if tombol[pygame.K_RIGHT]:
-        x += kecepatan
-    if tombol[pygame.K_UP]:
-        y -= kecepatan
-    if tombol[pygame.K_DOWN]:
-        y += kecepatan
+    # Update posisi
+    x += kecepatan
 
     # Gambar ulang
     layar.fill(PUTIH)
-    pygame.draw.rect(layar, MERAH, (x, y, lebar, tinggi))
+    pygame.draw.circle(layar, MERAH, (x, y), radius)
     pygame.display.update()
 
 pygame.quit()
 ```
 
-🎯 Penjelasan:
+🎉 Jalankan dan lihat lingkarannya bergerak otomatis!
 
-- `pygame.key.get_pressed()` → Mengecek tombol apa yang ditekan
-- `K_LEFT, K_RIGHT, dst` → Tombol panah
-- `x, y` → Posisi kotak
-- `x += kecepatan` → Gerak ke kanan
+---
 
-🎉 Jalankan dan coba tekan panah! Kotak akan bergerak 🚀
+🧱 4. Menangani Batas Layar
+
+Sekarang kita cegah objek keluar dari layar.
+
+Tambahkan kode ini sebelum menggambar ulang:
+
+```python
+if x + radius > 500:   # batas kanan
+    kecepatan = -kecepatan
+if x - radius < 0:     # batas kiri
+    kecepatan = -kecepatan
+```
+
+💡 Artinya:
+
+Jika lingkaran menyentuh kanan atau kiri, arah geraknya dibalik.
+
+🎯 Sekarang lingkaran akan memantul bolak-balik!
 
 ---
 
 ## 📝 Tantangan (PR):
 
-1. Ubah kecepatan kotak menjadi 10
-2. Ubah bentuknya jadi lingkaran
-3. Tambahkan batas agar kotak tidak keluar layar
+1. Ubah lingkaran jadi persegi
+2. Ubah kecepatan menjadi 5
+3. Tambahkan batas atas dan bawah juga
+4. Buat bola memantul ke segala arah (X dan Y)
